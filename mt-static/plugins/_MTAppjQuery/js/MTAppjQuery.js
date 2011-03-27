@@ -5,7 +5,7 @@
  *
  * Since:   2010-06-22
  * Update:  2011-01-21
- * for version: 0.2
+ * for version: 0.16
  * Comment: 
  * 
  */
