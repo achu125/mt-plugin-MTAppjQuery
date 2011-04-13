@@ -7,26 +7,8 @@ use MT::Util;
 use MT::Theme;
 use MTAppjQuery::Tmplset;
 
-
-###
-##
-#
-use MT::Log;
-use Data::Dumper;
-sub doLog {
-    my ($msg) = @_;     return unless defined($msg);
-    my $log = MT::Log->new;
-    $log->message($msg) ;
-    $log->save or die $log->errstr;
-}
-#
-##
-###
-
 sub cb_tmpl_source_header {
 	my ($cb, $app, $tmpl_ref) = @_;
-# my $q = $app->param;
-# doLog('$app->param! : '.Dumper($q));
     my $p = MT->component('mt_app_jquery');
     
     ### 各種IDを取得する
@@ -124,8 +106,6 @@ __MT__
             push @blogs_json, MT::Util::to_json(\%blog_data);
         }
         $blogs_json = join ",", @blogs_json;
-    
-# doLog("blogs_json : " . $blogs_json);
     
         my $MTAppSuperSlideMenu = MTAppjQuery::Tmplset::MTAppSuperSlideMenu;
         $super_slide_menu_js = <<__MT__;
@@ -245,10 +225,6 @@ sub cb_tmpl_source_footer {
 sub cb_tmpl_source_fav_blogs {
 	my ($cb, $app, $tmpl_ref) = @_;
 
-# my $user = $app->user;
-# my $perms = $user->permissions( 12 );
-# doLog('$user : '.Dumper($user->__meta));
-
 	### class="parent-website-n"を付与
 	my $classname = 'class="blog-content"';
     my $new_classname = 'class="blog-content parent-website-<mt:if name="blog_id"><mt:var name="website_id"><mt:else>0</mt:if>"';
@@ -266,14 +242,9 @@ sub cb_tmpl_source_fav_blogs {
 
 }
 
-# sub cb_tmpl_param_fav_blogs {
-#     my ($cb, $app, $param, $tmpl) = @_;
-#     $param->{'blogs_json'} = ('あ','い','う');
-# }
 
 sub cb_tmpl_param_edit_entry {
     my ($cb, $app, $param, $tmpl) = @_;
-# doLog(Dumper($param));
     ### $app->
     my $host        = $app->{__host};
     my $static_path = $app->static_path;
@@ -283,7 +254,6 @@ sub cb_tmpl_param_edit_entry {
     my $blog_url  = $param->{blog_url} || '';
     my $blog_path = $blog_url;
        $blog_path =~ s!^$host|\/$!!g;
-# doLog('$blog_path : '.$blog_path.'  $blog_url : '.$blog_url);
 
     ### $p->
     my $p = MT->component('mt_app_jquery');
@@ -335,7 +305,6 @@ __MT__
     <input type="text" name="asset_uploadify" id="asset_uploadify" value="<mt:var name="asset_uploadify">" class="full-width" mt:watch-change="1" />
 __MT__
     $new_node->innerHTML($inner_html);
-# 最後にコメント外す
     $new_node->setAttribute('class','hidden');
     $tmpl->insertAfter($new_node, $host_node);
 
@@ -351,11 +320,8 @@ __MT__
     <input type="text" name="asset_uploadify_meta" id="asset_uploadify_meta" value="<mt:var name="asset_uploadify_meta">" class="full-width" mt:watch-change="1" />
 __MT__
     $new_node->innerHTML($inner_html);
-# 最後にコメント外す
     $new_node->setAttribute('class','hidden');
     $tmpl->insertAfter($new_node, $host_node);
-
-# doLog('End cb_tmpl_param_edit_entry!');
 
 }
 
@@ -364,17 +330,13 @@ sub cb_cms_post_save_entry {
 
     require MT::Asset;
     require MT::ObjectAsset;
-# doLog('Start cb_cms_post_save_entry!');
-# doLog('========= $obj [start] ==========');
-# doLog(Dumper($obj));
-# doLog('========= $obj [ end ] ==========');
+
     ### $app->
     my $blog_id = $app->param('blog_id') || 0;
     my $q = $app->param;
 
     ### $obj->
     my $entry_id = $obj->id;
-# doLog('$entry_id : '.$entry_id);
 
     ### $p-> ($plugin->)
     my $p = MT->component('mt_app_jquery');
@@ -404,12 +366,8 @@ sub cb_cms_post_save_entry {
     my $assets = _parse($asset_uploadify, $headers);
     my $assets_meta = _parse($asset_uploadify_meta, $headers_meta);
 
-# doLog('ループ前の$assets : '.Dumper($assets));
-# doLog('ループ前の$assets_meta : '.Dumper($assets_meta));
-
     foreach my $asset (@$assets) {
         my $obj = MT::Asset::Image->new;
-# doLog('ループ中の$assets : '.Dumper($asset));
         $obj->blog_id($blog_id);
         $obj->label($asset->{asset_label});
         $obj->url($asset->{asset_url});
@@ -421,7 +379,6 @@ sub cb_cms_post_save_entry {
         $obj->created_by($asset->{asset_created_by});
         foreach my $asset_meta (@$assets_meta) {
             if ($asset_meta->{queue_id} == $asset->{queue_id}) {
-# doLog('ループ中の$assets_meta : '.Dumper($asset_meta));
                 $obj->image_width($asset_meta->{image_width});
                 $obj->image_height($asset_meta->{image_height});
             }
@@ -441,7 +398,6 @@ sub cb_cms_post_save_entry {
             }
         }
     }
-# doLog('@curt_post_assets_id : '.Dumper(@curt_post_assets_id));
 
     foreach my $asset_id (@curt_post_assets_id) {
         my $obj_asset = MT::ObjectAsset->new;
@@ -449,10 +405,8 @@ sub cb_cms_post_save_entry {
         $obj_asset->asset_id($asset_id);
         $obj_asset->object_ds('entry');
         $obj_asset->object_id($entry_id);
-# doLog('===== $obj_asset->save 直前 =====');
         $obj_asset->save or die 'Failed to save the objectasset.';
     }
-# doLog('End cb_cms_post_save_entry!');
 }
 
 sub _config_replace {

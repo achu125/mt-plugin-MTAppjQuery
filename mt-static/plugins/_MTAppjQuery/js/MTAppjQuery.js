@@ -4,9 +4,7 @@
  * Copyright (c) 2010 Tomohiro Okuwaki (http://www.tinybeans.net/blog/)
  *
  * Since:   2010-06-22
- * Update:  2011-01-21
  * for version: 0.16
- * Comment: 
  * 
  */
 (function($){
@@ -20,7 +18,6 @@
             // mtappScopeType = user, system, website, blog
             regType = new RegExp (mtappScopeType, "g");
         var checkID = function(checkVar, globalVar){
-//            console.log(checkVar + "," + globalVar);
             if (typeof checkVar == 'string') {
                 checkVar = checkVar.replace(/ *, */g,",").split(",");
                 for (var i = -1, n = checkVar.length; ++i < n;) {
@@ -47,19 +44,6 @@
         }
         // オプションで指定したタイトルがmtappTitle（titleタグの先頭部分）に含まれているか
         // または、mtappScopeTypeの値がオプションで指定したtypeに含まれている場合は実行
-/*
-            console.log('bool.blog_id : ' + bool.blog_id);
-            console.log('bool.entry_id : ' + bool.entry_id);
-            console.log('bool.page_id : ' + bool.page_id);
-            console.log('bool.category_id : ' + bool.category_id);
-            console.log('bool.template_id : ' + bool.template_id);
-            console.log('bool.folder_id : ' + bool.folder_id);
-            console.log('bool.asset_id : ' + bool.asset_id);
-            console.log('bool.comment_id : ' + bool.comment_id);
-            console.log('bool.ping_id : ' + bool.ping_id);
-            console.log('bool.user_id : ' + bool.user_id);
-            console.log('bool.field_id : ' + bool.field_id);
-*/
 
         if ( 
             regTitle.test(mtappTitle)
@@ -407,31 +391,6 @@
     // end - $(foo).MTAppTooltip();
 
     // -------------------------------------------------
-    //  $.MTAppSetting();
-    // -------------------------------------------------
-/*
-    $.fn.MTAppSetting = function(options){
-        var op = $.extend({}, $.fn.MTAppSetting.defaults, options);
-    };
-    $.fn.MTAppSetting.defaults = {
-        foo: null,
-        bar: null
-    };
-*/
-    
-    // -------------------------------------------------
-    //  $.MTAppSettingGroup();
-    // -------------------------------------------------
-/*
-    $.fn.MTAppSettingGroup = function(options){
-        var op = $.extend({}, $.fn.MTAppSettingGroup.defaults, options);
-    };
-    $.fn.MTAppSettingGroup.defaults = {
-        fields: null
-    };
-*/
-
-    // -------------------------------------------------
     //  $.MTAppCustomize();
     // -------------------------------------------------
     $.MTAppCustomize = function(options){
@@ -607,22 +566,18 @@
                 function(){
                     var w = $(this).width();
                     $(this).find('ul:eq(0)').css('left',w + 'px').show();
-//                    $('#field-convert_breaks').hide();
                 },
                 function(){
                     $(this).find('ul:eq(0)').hide();
-//                    $('#field-convert_breaks').show();
                 }
             );
             self.find('li').hover(
                 function(){
                     var w = $(this).width();
                     $(this).find('ul:eq(0)').css('left',w + 'px').show();
-//                    $('#convert_breaks').hide();
                 },
                 function(){
                     $(this).find('ul:eq(0)').hide();
-//                    $('#convert_breaks').show();
                 }
             );
         });
@@ -849,11 +804,6 @@
         
         // ブログ記事新規作成・更新
         if ($('body#edit-entry').length || $('body#edit-page').length) {
-            if ( window.console && window.console.log ) {
-                $('input, textarea').live('click', function(){
-                    window.console.log($(this).attr('id'));
-                });
-            }
         }
 
         // カテゴリ一覧
@@ -900,12 +850,6 @@
             });
         }
     };
-/*
-    $.MTAppDebug.defaults = {
-        foo: null,
-        bar: null
-    };
-*/
     // end - $.MTAppDebug()
 
     // -------------------------------------------------
@@ -1067,13 +1011,6 @@ jQuery(function($){
     // -------------------------------------------------
     //  Favorite Structure ダッシュボード
     // -------------------------------------------------
-/*
-    if ($("body#dashboard").length > 0 && $("#favorite_blogs").length > 0) {
-        $("div.blog-content").each(function(){
-            $(this).clone().appendTo("#favorite-structure-container");
-        });
-    }
-*/
     $('#favorite-structure').find('div.favorite-structure-container').hover(
     	function(){
     		$(this).css('backgroundColor','#C2EEB5');
